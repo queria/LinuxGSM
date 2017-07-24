@@ -31,14 +31,14 @@ fn_deps_detector(){
 		missingdep=0
 		if [ "${function_selfname}" == "command_install.sh" ]; then
 			echo -e "${green}${deptocheck}${default}"
-			sleep 0.5
+			#sleep 0.5
 		fi
 	else
 		# if dependency is not found
 		missingdep=1
 		if [ "${function_selfname}" == "command_install.sh" ]; then
 			echo -e "${red}${deptocheck}${default}"
-			sleep 0.5
+			#sleep 0.5
 		fi
 	fi
 
@@ -74,10 +74,10 @@ fn_deps_email(){
 fn_found_missing_deps(){
 	if [ "${#array_deps_missing[@]}" != "0" ]; then
 		fn_print_dots "Checking dependencies"
-		sleep 0.5
-		fn_print_error_nl "Checking dependencies: missing: ${red}${array_deps_missing[@]}${default}"
-		fn_script_log_error "Checking dependencies: missing: ${array_deps_missing[@]}"
-		sleep 1
+		#sleep 0.5
+		fn_print_warning_nl "Checking dependencies: missing: ${red}${array_deps_missing[@]}${default}"
+		fn_script_log_warn "Checking dependencies: missing: ${array_deps_missing[@]}"
+		#sleep 1
 		sudo -v > /dev/null 2>&1
 		if [ $? -eq 0 ]; then
 			fn_print_information_nl "Automatically installing missing dependencies."
@@ -105,14 +105,20 @@ fn_found_missing_deps(){
 			fi
 		else
 			echo ""
-			fn_print_warning_nl "$(whoami) does not have sudo access. Manually install dependencies."
-			fn_script_log_warn "$(whoami) does not have sudo access. Manually install dependencies."
+			fn_print_error_nl "$(whoami) does not have sudo access. Manually install dependencies."
+			fn_script_log_error "$(whoami) does not have sudo access. Manually install dependencies."
 			if [ -n "$(command -v dpkg-query 2>/dev/null)" ]; then
 				echo "	sudo dpkg --add-architecture i386; sudo apt-get update; sudo apt-get install ${array_deps_missing[@]}"
 			elif [ -n "$(command -v yum 2>/dev/null)" ]; then
 				echo "	sudo yum install ${array_deps_missing[@]}"
 			fi
 			echo ""
+            exit 1
+            # should we fail here instead?
+            # - first 'Checking dependencies: missing' ... should be WARNING
+            # - and instead this failure to auto-solve it ... should be ERROR
+            # ... as first case may still get auto-installed
+            # ... but error is critical and nonrecoverable
 		fi
 		if [ "${function_selfname}" == "command_install.sh" ]; then
 			sleep 5
