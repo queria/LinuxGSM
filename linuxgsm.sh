@@ -293,7 +293,10 @@ if [ "${shortname}" == "core" ]; then
 		} | column -s $'\t' -t | more
 		exit
 	elif [ "${userinput}" == "install" ]||[ "${userinput}" == "i" ]; then
-		fn_install_menu result "LinuxGSM" "Select game to install" "${serverlist}"
+        result="$2"
+        if [[ -z "$result" ]]; then
+            fn_install_menu result "LinuxGSM" "Select game to install" "${serverlist}"
+        fi
 		userinput="${result}"
 		fn_server_info
 		if [ "${result}" == "${gameservername}" ]; then
