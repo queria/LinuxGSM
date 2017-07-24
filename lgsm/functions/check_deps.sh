@@ -22,7 +22,7 @@ fn_deps_detector(){
 		dpkg-query -W -f='${Status}' ${deptocheck} 2>/dev/null | grep -q -P '^install ok installed$'
 		depstatus=$?
 	elif [ -n "$(command -v yum 2>/dev/null)" ]; then
-		yum -q list installed ${deptocheck} > /dev/null 2>&1
+		rpm -q ${deptocheck} > /dev/null 2>&1
 		depstatus=$?
 	fi
 
