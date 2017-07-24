@@ -42,9 +42,9 @@ configdirdefault="${lgsmdir}/config-default"
 ## GitHub Branch Select
 # Allows for the use of different function files
 # from a different repo and/or branch.
-githubuser="GameServerManagers"
+githubuser="queria"
 githubrepo="LinuxGSM"
-githubbranch="master"
+githubbranch="oor"
 
 # Core Function that is required first
 core_functions.sh(){
