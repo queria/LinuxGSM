@@ -14,7 +14,7 @@
 # https://github.com/GameServerManagers/LinuxGSM/wiki/LinuxGSM-Config-Files
 
 # Debugging
-if [ -f ".dev-debug" ]; then
+if [ 0 == 0 -o -f ".dev-debug" ]; then
 	exec 5>dev-debug.log
 	BASH_XTRACEFD="5"
 	set -x
